@@ -336,11 +336,8 @@ int main(int argc, char** argv) {
 	const char* fileName = FileNameFromPath(filename);
 
 	// Initialize the received core.
-	printf("preinit");
 	mCoreInitConfig(core, NULL);
-    printf("postconfinit");
 	core->init(core);
-    printf("postinit");
 
 	logger.log = null_log;
 	mLogSetDefaultLogger(&logger);

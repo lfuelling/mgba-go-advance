@@ -151,7 +151,6 @@ struct GBACore {
 };
 
 static bool _GBACoreInit(struct mCore* core) {
-	printf("_GBACoreInit called");
 	struct GBACore* gbacore = (struct GBACore*) core;
 
 	struct ARMCore* cpu = anonymousMemoryMap(sizeof(struct ARMCore));
@@ -175,10 +174,8 @@ static bool _GBACoreInit(struct mCore* core) {
 #endif
 	gbacore->audioMixer = NULL;
 
-	gbacore->cheatDevice = (struct mCheatDevice*) GBACoreCreate()->cheatDevice;
-
 	GBACreate(gba);
-
+	// TODO: Restore cheats
 	memset(gbacore->components, 0, sizeof(gbacore->components));
 	ARMSetComponents(cpu, &gba->d, CPU_COMPONENT_MAX, gbacore->components);
 	ARMInit(cpu);
