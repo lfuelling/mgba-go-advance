@@ -17,24 +17,24 @@ The projects original website can be found at [mgba.io](https://mgba.io/).
 *Building is currently only tested on the GO ADVANCE itself.*
 
 1. Install the dependencies
-	a. *These are actually the dependencies for [building emulationstation](https://github.com/OtherCrashOverride/emulationstation-go2#building), mgba happens to build with those installed and I'm not sure which of there are not needed 🙈.*
-	b. `sudo apt-get install git libsdl2-dev libfreeimage-dev libfreetype6-dev libcurl4-openssl-dev rapidjson-dev libasound2-dev libgl1-mesa-dev build-essential cmake fonts-droid-fallback premake4`
+    - *These are actually the dependencies for [building emulationstation](https://github.com/OtherCrashOverride/emulationstation-go2#building), mgba happens to build with those installed and I'm not sure which of there are not needed 🙈.*
+    - `sudo apt-get install git libsdl2-dev libfreeimage-dev libfreetype6-dev libcurl4-openssl-dev rapidjson-dev libasound2-dev libgl1-mesa-dev build-essential cmake fonts-droid-fallback premake4`
 2. Clone this repo
-	a. `git clone https://github.com/lfuelling/mgba-go-advance ~/mgba`
+    - `git clone https://github.com/lfuelling/mgba-go-advance ~/mgba`
 3. Build mgba
-	a. `mkdir build`
-	b. `cd build`
-	c. `cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..`
-	d. `make`
+    - `mkdir build`
+    - `cd build`
+    - `cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..`
+    - `make`
 4. Install the `libmgba.so` library (and mgba)
-	a. `sudo make install`
+    - `sudo make install`
 5. Build mgba for the GO ADVANCE
-	a. `cd ../odroid/`
-	b. `premake4 gmake`
-	c. `make`
+    - `cd ../odroid/`
+    - `premake4 gmake`
+    - `make`
 6. Overwrite the executable
-	a. `sudo mv mgba /usr/bin/mgba`
+    - `sudo mv mgba /usr/bin/mgba`
 7. Test run
-	a. `/usr/bin/mgba`
-	b. *The output should end with the line `missing filename.` instead of an error.*
+    - `/usr/bin/mgba`
+    - *The output should end with the line `missing filename.` instead of an error.*
 
