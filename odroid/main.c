@@ -611,13 +611,20 @@ int main(int argc, char** argv)
     char* cheatFilePath = PathCombine(homedir, cheatFileName);
     printf("cheatFilePath='%s'\n", cheatFilePath);
 
+    bool success = true;
     struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
     if (vf) {
         printf("parsing cheats...\n");
         struct mCheatDevice* device = core->cheatDevice(core);
         success = mCheatParseFile(device, vf);
         vf->close(vf);
-    }
+    } else {
+		success = false
+	}
+
+	if(!success) {
+        printf("Error parsing cheats!\n");
+	}
 
 	// continue execution
 	mCoreThreadContinue(&thread);
