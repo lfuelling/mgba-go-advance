@@ -619,7 +619,7 @@ int main(int argc, char** argv)
         success = mCheatParseFile(device, vf);
         vf->close(vf);
     } else {
-		success = false
+		success = false;
 	}
 
 	if(!success) {
