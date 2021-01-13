@@ -3,8 +3,8 @@ mGBA
 
 ## Why the fork?
 
-The version that is shipped with the ODROID emulationstation image feels really old and the saves of the current version are not compatible with it. 
-Since I'm a dirt cheater and I want to use my savegames across all my platforms, I need a current version of mgba that runs on the GO ADVANCE.
+The [version that is shipped with the ODROID emulationstation image](https://github.com/OtherCrashOverride/mgba-libretro-go2/commits/master) feels really old and the saves of the current version are not compatible with it. 
+Since I'm a dirty cheater and I want to use my savegames across all my platforms, I need a current version of mgba that runs on the GO ADVANCE.
 
 ## About mgba
 
