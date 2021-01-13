@@ -368,6 +368,39 @@ int main(int argc, char** argv) {
 	// core->loadROM(core, rom);
 	mCoreLoadFile(core, filename);
 
+    // Cheats
+    char* cheatFileName = (char*) malloc(strlen(fileName) + 4 + 1);
+    strcpy(cheatFileName, fileName);
+    strcat(cheatFileName, ".cheats");
+
+    char* cheatFilePath = PathCombine(homedir, cheatFileName);
+    printf("cheatFilePath='%s'\n", cheatFilePath);
+
+    struct mCheatDevice* device = NULL;
+    bool success = true;
+    struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
+    if (vf) {
+        printf("Cheat file opened...\n");
+        device = core->cheatDevice(core);
+        if(device) {
+            printf("Parsing cheats...\n");
+            mCheatDeviceClear(device);
+            success = mCheatParseFile(device, vf);
+        } else {
+            printf("Unable to get cheat device!\n");
+            success = false;
+        }
+        vf->close(vf);
+    } else {
+        success = false;
+    }
+
+    if (!success) {
+        printf("Error parsing cheats!\n");
+    } else {
+        printf("Cheats loaded...\n");
+    }
+
 	// Initialize the configuration system and load any saved settings for
 	// this frontend. The second argument to mCoreConfigInit should either be
 	// the name of the frontend, or NULL if you're not loading any saved
@@ -417,39 +450,6 @@ int main(int argc, char** argv) {
 	} else {
 		emuDevice = GO2_DEVICE_GBA;
 	}
-
-    // Cheats
-    char* cheatFileName = (char*) malloc(strlen(fileName) + 4 + 1);
-    strcpy(cheatFileName, fileName);
-    strcat(cheatFileName, ".cheats");
-
-    char* cheatFilePath = PathCombine(homedir, cheatFileName);
-    printf("cheatFilePath='%s'\n", cheatFilePath);
-
-    struct mCheatDevice* device = NULL;
-    bool success = true;
-    struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
-    if (vf) {
-        printf("Cheat file opened...\n");
-        device = core->cheatDevice(core);
-        if(device) {
-            printf("Parsing cheats...\n");
-            mCheatDeviceClear(device);
-            success = mCheatParseFile(device, vf);
-        } else {
-            printf("Unable to get cheat device!\n");
-            success = false;
-        }
-        vf->close(vf);
-    } else {
-        success = false;
-    }
-
-    if (!success) {
-        printf("Error parsing cheats!\n");
-    } else {
-        printf("Cheats loaded...\n");
-    }
 
 	// Take any settings overrides from the command line and make sure they get
 	// loaded into the config system, as well as manually overriding the
