@@ -1,6 +1,13 @@
 mGBA
 ====
 
+## Why the fork?
+
+The version that is shipped with the ODROID emulationstation image feels really old and the saves of the current version are not compatible with it. 
+Since I'm a dirt cheater and I want to use my savegames across all my platforms, I need a current version of mgba that runs on the GO ADVANCE.
+
+## About mgba
+
 mGBA is an emulator for running Game Boy Advance games. It aims to be faster and more accurate than many existing Game Boy Advance emulators, as well as adding features that other emulators lack. It also supports Game Boy and Game Boy Color games.
 
 Up-to-date news and downloads can be found at [mgba.io](https://mgba.io/).
