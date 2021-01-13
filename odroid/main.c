@@ -532,6 +532,34 @@ int main(int argc, char** argv) {
 	// continue execution
 	mCoreThreadContinue(&thread);
 
+
+    // Cheats
+    char* cheatFileName = (char*) malloc(strlen(fileName) + 4 + 1);
+    strcpy(cheatFileName, fileName);
+    strcat(cheatFileName, ".cheats");
+
+    char* cheatFilePath = PathCombine(homedir, cheatFileName);
+    printf("cheatFilePath='%s'\n", cheatFilePath);
+
+    struct mCheatDevice* device = NULL;
+    bool success = true;
+    struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
+    if (vf && (device = core->cheatDevice(core))) {
+        printf("Parsing cheats...\n");
+        mCheatDeviceClear(device);
+        success = mCheatParseFile(device, vf);
+        vf->close(vf);
+    } else {
+        success = false;
+    }
+
+    if (!success) {
+        printf("Error parsing cheats!\n");
+    } else {
+        printf("Cheats loaded...\n");
+    }
+
+
 	int sw = (dh * 1.5f);
 
 	// Main loop
@@ -647,32 +675,6 @@ int main(int argc, char** argv) {
 			usleep(1);
 		}
 	}
-
-    // Cheats
-    char* cheatFileName = (char*) malloc(strlen(fileName) + 4 + 1);
-    strcpy(cheatFileName, fileName);
-    strcat(cheatFileName, ".cheats");
-
-    char* cheatFilePath = PathCombine(homedir, cheatFileName);
-    printf("cheatFilePath='%s'\n", cheatFilePath);
-
-    struct mCheatDevice* device = NULL;
-    bool success = true;
-    struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
-    if (vf && (device = core->cheatDevice(core))) {
-        printf("Parsing cheats...\n");
-        mCheatDeviceClear(device);
-        success = mCheatParseFile(device, vf);
-        vf->close(vf);
-    } else {
-        success = false;
-    }
-
-    if (!success) {
-        printf("Error parsing cheats!\n");
-    } else {
-        printf("Cheats loaded...\n");
-    }
 
 	pthread_join(thread_id, NULL);
 	mCoreThreadJoin(&thread);
