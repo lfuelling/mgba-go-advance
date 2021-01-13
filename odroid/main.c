@@ -586,7 +586,31 @@ int main(int argc, char** argv)
 
     char* savePath = PathCombine(homedir, saveName);
     printf("savePath='%s'\n", savePath);
-     
+
+    // Cheats
+    char* cheatFileName = (char*)malloc(strlen(fileName) + 4 + 1);
+    strcpy(cheatFileName, fileName);
+    strcat(cheatFileName, ".cheats");
+
+    char* cheatFilePath = PathCombine(homedir, cheatFileName);
+    printf("cheatFilePath='%s'\n", cheatFilePath);
+
+    bool success = true;
+    struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
+    if (vf) {
+        printf("Parsing cheats...\n");
+        struct mCheatDevice* device = core->cheatDevice(core);
+        success = mCheatParseFile(device, vf);
+        vf->close(vf);
+    } else {
+        success = false;
+    }
+
+    if(!success) {
+        printf("Error parsing cheats!\n");
+    } else {
+        printf("Cheats loaded...\n");
+    }
 
     // SRAM
     char* sramName = (char*)malloc(strlen(fileName) + 4 + 1);
@@ -602,29 +626,6 @@ int main(int argc, char** argv)
         LoadState(savePath);
     }
     LoadSram(sramPath);
-
-	// Cheats
-    char* cheatFileName = (char*)malloc(strlen(fileName) + 4 + 1);
-    strcpy(cheatFileName, fileName);
-    strcat(cheatFileName, ".cheats");
-
-    char* cheatFilePath = PathCombine(homedir, cheatFileName);
-    printf("cheatFilePath='%s'\n", cheatFilePath);
-
-    bool success = true;
-    struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
-    if (vf) {
-        printf("parsing cheats...\n");
-        struct mCheatDevice* device = core->cheatDevice(core);
-        success = mCheatParseFile(device, vf);
-        vf->close(vf);
-    } else {
-		success = false;
-	}
-
-	if(!success) {
-        printf("Error parsing cheats!\n");
-	}
 
 	// continue execution
 	mCoreThreadContinue(&thread);
