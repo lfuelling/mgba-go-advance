@@ -551,7 +551,7 @@ int main(int argc, char** argv) {
             success = mCheatParseFile(device, vf);
 		} else {
             printf("Unable to get cheat device!\n");
-			success = false
+			success = false;
 		}
         vf->close(vf);
     } else {
