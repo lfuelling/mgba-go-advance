@@ -596,11 +596,12 @@ int main(int argc, char** argv)
     char* cheatFilePath = PathCombine(homedir, cheatFileName);
     printf("cheatFilePath='%s'\n", cheatFilePath);
 
+    struct mCheatDevice* device = NULL;
     bool success = true;
     struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
-    if (vf) {
+    if (vf && (device = core->cheatDevice(core))) {
         printf("Parsing cheats...\n");
-        struct mCheatDevice* device = core->cheatDevice(core);
+        mCheatDeviceClear(device);
         success = mCheatParseFile(device, vf);
         vf->close(vf);
     } else {
