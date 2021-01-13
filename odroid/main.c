@@ -39,6 +39,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <mgba/core/blip_buf.h>
 #include <mgba/core/log.h>
 #include <mgba/core/serialize.h>
+#include <mgba/core/cheats.h>
 #include <mgba/gb/interface.h>
 #include <mgba/internal/gb/gb.h>
 #include <mgba-util/vfs.h>
