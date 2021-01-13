@@ -381,6 +381,10 @@ int main(int argc, char** argv)
     const char *homedir = pw->pw_dir;
     const char* fileName = FileNameFromPath(filename);
 
+	// Initialize the received core.
+    mCoreInitConfig(core, NULL);
+	core->init(core);
+
     // Cheats
     char* cheatFileName = (char*)malloc(strlen(fileName) + 4 + 1);
     strcpy(cheatFileName, fileName);
@@ -406,10 +410,6 @@ int main(int argc, char** argv)
     } else {
         printf("Cheats loaded...\n");
     }
-
-	// Initialize the received core.
-    mCoreInitConfig(core, NULL);
-	core->init(core);
 
     logger.log = null_log;
 	mLogSetDefaultLogger(&logger);
