@@ -19,3 +19,6 @@ version.c
 
 .idea
 *.iml
+
+/odroid/Makefile
+/odroid/build
