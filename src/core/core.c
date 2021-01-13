@@ -42,6 +42,7 @@ static const struct mCoreFilter {
 };
 
 struct mCore* mCoreFindVF(struct VFile* vf) {
+	printf("mCoreFindVF called...\n");
 	if (!vf) {
 		return NULL;
 	}
@@ -52,6 +53,7 @@ struct mCore* mCoreFindVF(struct VFile* vf) {
 		}
 	}
 	if (filter->open) {
+        printf("returning filter.open()...\n");
 		return filter->open();
 	}
 #ifndef MINIMAL_CORE
@@ -81,9 +83,11 @@ enum mPlatform mCoreIsCompatible(struct VFile* vf) {
 #endif
 
 struct mCore* mCoreFind(const char* path) {
-	struct VDir* archive = VDirOpenArchive(path);
-	struct mCore* core = NULL;
+    printf("mCoreFind called...\n");
+    struct VDir* archive = VDirOpenArchive(path);
+    struct mCore* core = NULL;
 	if (archive) {
+        printf("archive=true\n");
 		struct VDirEntry* dirent = archive->listNext(archive);
 		while (dirent) {
 			struct VFile* vf = archive->openFile(archive, dirent->name(dirent), O_RDONLY);
@@ -100,6 +104,7 @@ struct mCore* mCoreFind(const char* path) {
 		}
 		archive->close(archive);
 	} else {
+        printf("archive=false\n");
 		struct VFile* vf = VFileOpen(path, O_RDONLY);
 		if (!vf) {
 			return NULL;
@@ -108,8 +113,10 @@ struct mCore* mCoreFind(const char* path) {
 		vf->close(vf);
 	}
 	if (core) {
+        printf("returning core...\n");
 		return core;
 	}
+    printf("returning NULL...\n");
 	return NULL;
 }
 
