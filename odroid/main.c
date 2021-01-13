@@ -544,7 +544,7 @@ int main(int argc, char** argv) {
     bool success = true;
     struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
     if (vf) {
-        device = core->cheatDevice(core)
+        device = core->cheatDevice(core);
 		if(device) {
             printf("Parsing cheats...\n");
             mCheatDeviceClear(device);
