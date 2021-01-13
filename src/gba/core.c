@@ -1090,6 +1090,7 @@ static void _GBACoreEndVideoLog(struct mCore* core) {
 #endif
 
 struct mCore* GBACoreCreate(void) {
+    printf("GBACoreCreate called...\n");
 	struct GBACore* gbacore = malloc(sizeof(*gbacore));
 	struct mCore* core = &gbacore->d;
 	memset(&core->opts, 0, sizeof(core->opts));
