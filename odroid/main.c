@@ -377,6 +377,8 @@ int main(int argc, char** argv)
 		return false;
 	}
 
+    struct passwd *pw = getpwuid(getuid());
+    const char *homedir = pw->pw_dir;
     const char* fileName = FileNameFromPath(filename);
 
     // Cheats
@@ -606,10 +608,6 @@ int main(int argc, char** argv)
     char* saveName = (char*)malloc(strlen(fileName) + 4 + 1);
     strcpy(saveName, fileName);
     strcat(saveName, ".sav");
-
-
-    struct passwd *pw = getpwuid(getuid());
-    const char *homedir = pw->pw_dir;
 
     char* savePath = PathCombine(homedir, saveName);
     printf("savePath='%s'\n", savePath);
