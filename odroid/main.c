@@ -595,7 +595,6 @@ int main(int argc, char** argv)
     
     char* sramPath = PathCombine(homedir, sramName);
     printf("sramPath='%s'\n", sramPath);
-    
 
     mCoreThreadInterrupt(&thread);
     if (!restart)
@@ -604,8 +603,21 @@ int main(int argc, char** argv)
     }
     LoadSram(sramPath);
 
-	// load cheats file if present
-    mCoreAutoloadCheats(core);
+	// Cheats
+    char* cheatFileName = (char*)malloc(strlen(fileName) + 4 + 1);
+    strcpy(cheatFileName, fileName);
+    strcat(cheatFileName, ".cheats");
+
+    char* cheatFilePath = PathCombine(homedir, cheatFileName);
+    printf("cheatFilePath='%s'\n", cheatFilePath);
+
+    struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
+    if (vf) {
+        printf("parsing cheats...\n");
+        struct mCheatDevice* device = core->cheatDevice(core);
+        success = mCheatParseFile(device, vf);
+        vf->close(vf);
+    }
 
 	// continue execution
 	mCoreThreadContinue(&thread);
