@@ -377,6 +377,8 @@ int main(int argc, char** argv)
 		return false;
 	}
 
+    const char* fileName = FileNameFromPath(filename);
+
     // Cheats
     char* cheatFileName = (char*)malloc(strlen(fileName) + 4 + 1);
     strcpy(cheatFileName, fileName);
@@ -601,8 +603,6 @@ int main(int argc, char** argv)
     
 
     // Restore
-    const char* fileName = FileNameFromPath(filename);
-    
     char* saveName = (char*)malloc(strlen(fileName) + 4 + 1);
     strcpy(saveName, fileName);
     strcat(saveName, ".sav");
