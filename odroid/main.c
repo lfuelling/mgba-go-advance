@@ -532,7 +532,6 @@ int main(int argc, char** argv) {
 	// continue execution
 	mCoreThreadContinue(&thread);
 
-
     // Cheats
     char* cheatFileName = (char*) malloc(strlen(fileName) + 4 + 1);
     strcpy(cheatFileName, fileName);
@@ -544,10 +543,14 @@ int main(int argc, char** argv) {
     struct mCheatDevice* device = NULL;
     bool success = true;
     struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
-    if (vf && (device = core->cheatDevice(core))) {
-        printf("Parsing cheats...\n");
-        mCheatDeviceClear(device);
-        success = mCheatParseFile(device, vf);
+    if (vf) {
+		if((device = core->cheatDevice(core))) {
+            printf("Parsing cheats...\n");
+            mCheatDeviceClear(device);
+            success = mCheatParseFile(device, vf);
+		} else {
+            printf("Unable to get cheat device!\n");
+		}
         vf->close(vf);
     } else {
         success = false;
@@ -558,7 +561,6 @@ int main(int argc, char** argv) {
     } else {
         printf("Cheats loaded...\n");
     }
-
 
 	int sw = (dh * 1.5f);
 
