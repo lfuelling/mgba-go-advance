@@ -418,6 +418,39 @@ int main(int argc, char** argv) {
 		emuDevice = GO2_DEVICE_GBA;
 	}
 
+    // Cheats
+    char* cheatFileName = (char*) malloc(strlen(fileName) + 4 + 1);
+    strcpy(cheatFileName, fileName);
+    strcat(cheatFileName, ".cheats");
+
+    char* cheatFilePath = PathCombine(homedir, cheatFileName);
+    printf("cheatFilePath='%s'\n", cheatFilePath);
+
+    struct mCheatDevice* device = NULL;
+    bool success = true;
+    struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
+    if (vf) {
+        printf("Cheat file opened...\n");
+        device = core->cheatDevice(core);
+        if(device) {
+            printf("Parsing cheats...\n");
+            mCheatDeviceClear(device);
+            success = mCheatParseFile(device, vf);
+        } else {
+            printf("Unable to get cheat device!\n");
+            success = false;
+        }
+        vf->close(vf);
+    } else {
+        success = false;
+    }
+
+    if (!success) {
+        printf("Error parsing cheats!\n");
+    } else {
+        printf("Cheats loaded...\n");
+    }
+
 	// Take any settings overrides from the command line and make sure they get
 	// loaded into the config system, as well as manually overriding the
 	// "idleOptimization" setting to ensure cores that can detect idle loops
@@ -531,39 +564,6 @@ int main(int argc, char** argv) {
 
 	// continue execution
 	mCoreThreadContinue(&thread);
-
-    // Cheats
-    char* cheatFileName = (char*) malloc(strlen(fileName) + 4 + 1);
-    strcpy(cheatFileName, fileName);
-    strcat(cheatFileName, ".cheats");
-
-    char* cheatFilePath = PathCombine(homedir, cheatFileName);
-    printf("cheatFilePath='%s'\n", cheatFilePath);
-
-    struct mCheatDevice* device = NULL;
-    bool success = true;
-    struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
-    if (vf) {
-        printf("Cheat file found...\n");
-        device = core->cheatDevice(core);
-		if(device) {
-            printf("Parsing cheats...\n");
-            mCheatDeviceClear(device);
-            success = mCheatParseFile(device, vf);
-		} else {
-            printf("Unable to get cheat device!\n");
-			success = false;
-		}
-        vf->close(vf);
-    } else {
-        success = false;
-    }
-
-    if (!success) {
-        printf("Error parsing cheats!\n");
-    } else {
-        printf("Cheats loaded...\n");
-    }
 
 	int sw = (dh * 1.5f);
 
