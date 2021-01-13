@@ -5,6 +5,7 @@
 
 /build
 /build-*
+/cmake-build-*
 
 *.a
 *.dylib
@@ -15,3 +16,6 @@
 CMakeCache.txt
 CMakeFiles
 version.c
+
+.idea
+*.iml
