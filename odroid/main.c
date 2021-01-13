@@ -376,14 +376,12 @@ int main(int argc, char** argv)
 		return false;
 	}
 
-
 	// Initialize the received core.
     mCoreInitConfig(core, NULL);
 	core->init(core);
 
     logger.log = null_log;
 	mLogSetDefaultLogger(&logger);
-
 
 	// Get the dimensions required for this core and send them to the client.
 	unsigned width, height;
@@ -604,9 +602,13 @@ int main(int argc, char** argv)
     {
         LoadState(savePath);
     }
-    LoadSram(sramPath);    
-    mCoreThreadContinue(&thread);
+    LoadSram(sramPath);
 
+	// load cheats file if present
+    mCoreAutoloadCheats(core);
+
+	// continue execution
+	mCoreThreadContinue(&thread);
 
     int sw = (dh * 1.5f);
 
