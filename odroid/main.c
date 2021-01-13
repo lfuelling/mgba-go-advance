@@ -88,7 +88,7 @@ static void InitSound()
     audio = go2_audio_create(SOUND_FREQUENCY);
 }
 
-static void ProcessAudio(uint8_t* samples, int frameCount)
+static void ProcessAudio(int16_t* samples, int frameCount)
 {
     go2_audio_submit(audio, (const short*)samples, frameCount);
 }
