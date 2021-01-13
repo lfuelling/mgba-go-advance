@@ -335,6 +335,39 @@ int main(int argc, char** argv) {
 	const char* homedir = pw->pw_dir;
 	const char* fileName = FileNameFromPath(filename);
 
+    // Cheats
+    char* cheatFileName = (char*) malloc(strlen(fileName) + 4 + 1);
+    strcpy(cheatFileName, fileName);
+    strcat(cheatFileName, ".cheats");
+
+    char* cheatFilePath = PathCombine(homedir, cheatFileName);
+    printf("cheatFilePath='%s'\n", cheatFilePath);
+
+    struct mCheatDevice* device = NULL;
+    bool success = true;
+    struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
+    if (vf) {
+        printf("Cheat file opened...\n");
+        device = core->cheatDevice(core);
+        if(device) {
+            printf("Parsing cheats...\n");
+            mCheatDeviceClear(device);
+            success = mCheatParseFile(device, vf);
+        } else {
+            printf("Unable to get cheat device!\n");
+            success = false;
+        }
+        vf->close(vf);
+    } else {
+        success = false;
+    }
+
+    if (!success) {
+        printf("Error parsing cheats!\n");
+    } else {
+        printf("Cheats loaded...\n");
+    }
+
 	// Initialize the received core.
 	mCoreInitConfig(core, NULL);
 	core->init(core);
@@ -435,39 +468,6 @@ int main(int argc, char** argv) {
 
 	// Reset the core. This is needed before it can run.
 	core->reset(core);
-
-    // Cheats
-    char* cheatFileName = (char*) malloc(strlen(fileName) + 4 + 1);
-    strcpy(cheatFileName, fileName);
-    strcat(cheatFileName, ".cheats");
-
-    char* cheatFilePath = PathCombine(homedir, cheatFileName);
-    printf("cheatFilePath='%s'\n", cheatFilePath);
-
-    struct mCheatDevice* device = NULL;
-    bool success = true;
-    struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
-    if (vf) {
-        printf("Cheat file opened...\n");
-        device = core->cheatDevice(core);
-        if(device) {
-            printf("Parsing cheats...\n");
-            mCheatDeviceClear(device);
-            success = mCheatParseFile(device, vf);
-        } else {
-            printf("Unable to get cheat device!\n");
-            success = false;
-        }
-        vf->close(vf);
-    } else {
-        success = false;
-    }
-
-    if (!success) {
-        printf("Error parsing cheats!\n");
-    } else {
-        printf("Cheats loaded...\n");
-    }
 
 	InitSound();
 	input = go2_input_create();
