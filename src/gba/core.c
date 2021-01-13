@@ -935,7 +935,7 @@ static struct mCheatDevice* _GBACoreCheatDevice(struct mCore* core) {
     printf("_GBACoreCheatDevice called...\n");
 	struct GBACore* gbacore = (struct GBACore*) core;
 	if (!gbacore->cheatDevice) {
-        printf("_GBACoreCheatDevice init true...\n");
+        printf("_GBACoreCheatDevice init...\n");
 		gbacore->cheatDevice = GBACheatDeviceCreate();
 		((struct ARMCore*) core->cpu)->components[CPU_COMPONENT_CHEAT_DEVICE] = &gbacore->cheatDevice->d;
 		ARMHotplugAttach(core->cpu, CPU_COMPONENT_CHEAT_DEVICE);

@@ -812,8 +812,10 @@ static bool _GBCoreLookupIdentifier(struct mCore* core, const char* name, int32_
 #endif
 
 static struct mCheatDevice* _GBCoreCheatDevice(struct mCore* core) {
+    printf("_GBCoreCheatDevice called...\n");
 	struct GBCore* gbcore = (struct GBCore*) core;
 	if (!gbcore->cheatDevice) {
+        printf("_GBCoreCheatDevice init...\n");
 		gbcore->cheatDevice = GBCheatDeviceCreate();
 		((struct SM83Core*) core->cpu)->components[CPU_COMPONENT_CHEAT_DEVICE] = &gbcore->cheatDevice->d;
 		SM83HotplugAttach(core->cpu, CPU_COMPONENT_CHEAT_DEVICE);
