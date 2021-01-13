@@ -17,7 +17,7 @@ The projects original website can be found at [mgba.io](https://mgba.io/).
 *Building is currently only tested on the GO ADVANCE itself.*
 
 1. Install the dependencies
-    - *These are actually the dependencies for [building emulationstation](https://github.com/OtherCrashOverride/emulationstation-go2#building), mgba happens to build with those installed and I'm not sure which of there are not needed 🙈.*
+    - *These are actually based on the dependencies for [building emulationstation](https://github.com/OtherCrashOverride/emulationstation-go2#building), mgba happens to build with those installed and I'm not sure which of these are not needed 🙈.*
     - `sudo apt-get install git libsdl2-dev libfreeimage-dev libfreetype6-dev libcurl4-openssl-dev rapidjson-dev libasound2-dev libgl1-mesa-dev build-essential cmake fonts-droid-fallback premake4`
 2. Clone this repo
     - `git clone https://github.com/lfuelling/mgba-go-advance ~/mgba`
