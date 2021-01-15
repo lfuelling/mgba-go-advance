@@ -168,7 +168,7 @@ static bool _GBACoreInit(struct mCore* core) {
 	core->videoLogger = NULL;
 	gbacore->overrides = NULL;
 	gbacore->debuggerPlatform = NULL;
-	gbacore->cheatDevice = NULL;
+	//gbacore->cheatDevice = NULL;
 #ifndef MINIMAL_CORE
 	gbacore->logContext = NULL;
 #endif

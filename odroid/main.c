@@ -335,6 +335,35 @@ int main(int argc, char** argv) {
 	const char* homedir = pw->pw_dir;
 	const char* fileName = FileNameFromPath(filename);
 
+	// Initialize the received core.
+	mCoreInitConfig(core, NULL);
+	core->init(core);
+
+	logger.log = null_log;
+	mLogSetDefaultLogger(&logger);
+
+	// Get the dimensions required for this core and send them to the client.
+	unsigned width, height;
+	core->desiredVideoDimensions(core, &width, &height); // ssize_t bufferSize = width * height * BYTES_PER_PIXEL;
+
+	printf("RENDER: width=%d, height=%d\n", width, height);
+
+	// Create a video buffer and tell the core to use it.
+	// If a core isn't told to use a video buffer, it won't render any graphics.
+	// This may be useful in situations where everything except for displayed
+	// output is desired.
+	void* videoOutputBuffer = malloc(width * height * BYTES_PER_PIXEL);
+	if (!videoOutputBuffer) {
+		printf("go2_surface_map failed.\n");
+		abort();
+	}
+
+	core->setVideoBuffer(core, videoOutputBuffer, width);
+
+	core->setAudioBufferSize(core, SAMPLES);
+	blip_set_rates(core->getAudioChannel(core, 0), core->frequency(core), SOUND_FREQUENCY);
+	blip_set_rates(core->getAudioChannel(core, 1), core->frequency(core), SOUND_FREQUENCY);
+
     // Cheats
     char* cheatFileName = (char*) malloc(strlen(fileName) + 4 + 1);
     strcpy(cheatFileName, fileName);
@@ -367,35 +396,6 @@ int main(int argc, char** argv) {
     } else {
         printf("Cheats loaded...\n");
     }
-
-	// Initialize the received core.
-	mCoreInitConfig(core, NULL);
-	core->init(core);
-
-	logger.log = null_log;
-	mLogSetDefaultLogger(&logger);
-
-	// Get the dimensions required for this core and send them to the client.
-	unsigned width, height;
-	core->desiredVideoDimensions(core, &width, &height); // ssize_t bufferSize = width * height * BYTES_PER_PIXEL;
-
-	printf("RENDER: width=%d, height=%d\n", width, height);
-
-	// Create a video buffer and tell the core to use it.
-	// If a core isn't told to use a video buffer, it won't render any graphics.
-	// This may be useful in situations where everything except for displayed
-	// output is desired.
-	void* videoOutputBuffer = malloc(width * height * BYTES_PER_PIXEL);
-	if (!videoOutputBuffer) {
-		printf("go2_surface_map failed.\n");
-		abort();
-	}
-
-	core->setVideoBuffer(core, videoOutputBuffer, width);
-
-	core->setAudioBufferSize(core, SAMPLES);
-	blip_set_rates(core->getAudioChannel(core, 0), core->frequency(core), SOUND_FREQUENCY);
-	blip_set_rates(core->getAudioChannel(core, 1), core->frequency(core), SOUND_FREQUENCY);
 
 	// Tell the core to actually load the file.
 	// core->loadROM(core, rom);
