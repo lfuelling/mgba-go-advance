@@ -166,11 +166,14 @@ bool mCheatParseFile(struct mCheatDevice* device, struct VFile* vf) {
 			newSet->enabled = !nextDisabled;
 			nextDisabled = false;
 			if (set) {
+                printf("mCheatParseFile case# adding set...\n");
 				mCheatAddSet(device, set);
 			}
 			if (set) {
+                printf("mCheatParseFile case# copying properties...\n");
 				newSet->copyProperties(newSet, set);
 			}
+            printf("mCheatParseFile case# parsing directives...\n");
 			newSet->parseDirectives(newSet, &directives);
 			set = newSet;
 			break;
@@ -196,32 +199,37 @@ bool mCheatParseFile(struct mCheatDevice* device, struct VFile* vf) {
 			if (!set) {
 				if (strncmp(cheat, "cheats = ", 9) == 0) {
 					// This is in libretro format, switch over to that parser
+                    printf("mCheatParseFile using libretro parser...\n");
 					vf->seek(vf, 0, SEEK_SET);
 					StringListDeinit(&directives);
 					return mCheatParseLibretroFile(device, vf);
 				}
 				if (cheat[0] == '[') {
 					// This is in EZ Flash CHT format, switch over to that parser
+                    printf("mCheatParseFile using ezflash-cht parser...\n");
 					vf->seek(vf, 0, SEEK_SET);
 					StringListDeinit(&directives);
 					return mCheatParseEZFChtFile(device, vf);
 				}
+                printf("mCheatParseFile creating set...\n");
 				set = device->createSet(device, NULL);
 				set->enabled = !nextDisabled;
 				nextDisabled = false;
 			}
+            printf("mCheatParseFile adding line...\n");
 			mCheatAddLine(set, cheat, 0);
 			break;
 		}
 	}
 	if (set) {
+        printf("mCheatParseFile adding set...\n");
 		mCheatAddSet(device, set);
 	}
+    printf("mCheatParseFile deinit...\n");
 	size_t d;
 	for (d = 0; d < StringListSize(&directives); ++d) {
 		free(*StringListGetPointer(&directives, d));
 	}
-    printf("mCheatParseFile deinit...\n");
 	StringListClear(&directives);
 	StringListDeinit(&directives);
 	return true;
