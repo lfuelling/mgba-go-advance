@@ -431,22 +431,13 @@ int main(int argc, char** argv) {
     struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
     if (vf) {
         printf("Cheat file opened...\n");
-        struct mCheatDevice* device = core->cheatDevice(core);
-        if (device) {
-            printf("Parsing cheats...\n");
-            mCheatDeviceClear(device);
-            success = mCheatParseFile(device, vf);
+        printf("Running autoload...\n");
+        if (mCoreAutoloadCheatsFromFile(core, vf)) {
+            printf("Autoload from file successful!\n");
         } else {
-            printf("Unable to get cheat device!\n");
-            printf("Running autoload...\n");
-            if (mCoreAutoloadCheatsFromFile(core, vf)) {
-                printf("Autoload from file successful!\n");
-            } else {
-                printf("Autoload from file failed!\n");
-                success = false;
-            }
+            printf("Autoload from file failed!\n");
+            success = false;
         }
-        //vf->close(vf);
     } else {
         printf("Unable to open cheats file...\n");
         success = false;
