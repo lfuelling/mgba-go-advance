@@ -364,49 +364,49 @@ int main(int argc, char** argv) {
 	blip_set_rates(core->getAudioChannel(core, 0), core->frequency(core), SOUND_FREQUENCY);
 	blip_set_rates(core->getAudioChannel(core, 1), core->frequency(core), SOUND_FREQUENCY);
 
-    // Cheats
-    char* cheatFileName = (char*) malloc(strlen(fileName) + 4 + 1);
-    strcpy(cheatFileName, fileName);
-    strcat(cheatFileName, ".cheats");
+	// Cheats
+	char* cheatFileName = (char*) malloc(strlen(fileName) + 4 + 1);
+	strcpy(cheatFileName, fileName);
+	strcat(cheatFileName, ".cheats");
 
-    char* cheatFilePath = PathCombine(homedir, cheatFileName);
-    printf("cheatFilePath='%s'\n", cheatFilePath);
+	char* cheatFilePath = PathCombine(homedir, cheatFileName);
+	printf("cheatFilePath='%s'\n", cheatFilePath);
 
-    bool success = true;
-    struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
-    if (vf) {
-        printf("Cheat file opened...\n");
-        struct mCheatDevice* device = core->cheatDevice(core);
-        if(device) {
-            printf("Parsing cheats...\n");
-            mCheatDeviceClear(device);
-            success = mCheatParseFile(device, vf);
-        } else {
-            printf("Unable to get cheat device!\n");
-            printf("Running autoload...");
-            if(mCoreAutoloadCheats(core)) {
-                printf("Autoload successful!");
-            } else {
-                printf("Autoload failed! Trying autoload from file...");
-                if(mCoreAutoloadCheatsFromFile(core, vf)) {
-                    printf("Autoload from file successful!");
-                } else {
-                    printf("Autoload from file failed!");
-                    success = false;
-                }
-            }
-        }
-        vf->close(vf);
-    } else {
-        printf("Unable to open cheats file...\n");
-        success = false;
-    }
+	bool success = true;
+	struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
+	if (vf) {
+		printf("Cheat file opened...\n");
+		struct mCheatDevice* device = core->cheatDevice(core);
+		if (device) {
+			printf("Parsing cheats...\n");
+			mCheatDeviceClear(device);
+			success = mCheatParseFile(device, vf);
+		} else {
+			printf("Unable to get cheat device!\n");
+			printf("Running autoload...\n");
+			if (mCoreAutoloadCheats(core)) {
+				printf("Autoload successful!\n");
+			} else {
+				printf("Autoload failed! Trying autoload from file...\n");
+				if (mCoreAutoloadCheatsFromFile(core, vf)) {
+					printf("Autoload from file successful!\n");
+				} else {
+					printf("Autoload from file failed!\n");
+					success = false;
+				}
+			}
+		}
+		vf->close(vf);
+	} else {
+		printf("Unable to open cheats file...\n");
+		success = false;
+	}
 
-    if (!success) {
-        printf("Error while loading cheats!\n");
-    } else {
-        printf("Cheats loaded...\n");
-    }
+	if (!success) {
+		printf("Error while loading cheats!\n");
+	} else {
+		printf("Cheats loaded...\n");
+	}
 
 	// Tell the core to actually load the file.
 	// core->loadROM(core, rom);
