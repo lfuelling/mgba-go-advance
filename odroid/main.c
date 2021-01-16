@@ -378,23 +378,23 @@ int main(int argc, char** argv) {
         printf("Cheat file opened...\n");
         struct mCheatDevice* device = core->cheatDevice(core);
         if(device) {
-			printf("Running autoload...");
-            if(mCoreAutoloadCheats(core)) {
-                printf("Autoload successful!");
-			} else {
-				printf("Autoload failed! Trying autoload from file...");
-                if(mCoreAutoloadCheatsFromFile(core, vf)) {
-                    printf("Autoload from file successful!");
-				} else {
-                    printf("Autoload from file failed!");
-				}
-			}
             printf("Parsing cheats...\n");
             mCheatDeviceClear(device);
             success = mCheatParseFile(device, vf);
         } else {
             printf("Unable to get cheat device!\n");
-            success = false;
+            printf("Running autoload...");
+            if(mCoreAutoloadCheats(core)) {
+                printf("Autoload successful!");
+            } else {
+                printf("Autoload failed! Trying autoload from file...");
+                if(mCoreAutoloadCheatsFromFile(core, vf)) {
+                    printf("Autoload from file successful!");
+                } else {
+                    printf("Autoload from file failed!");
+                    success = false;
+                }
+            }
         }
         vf->close(vf);
     } else {
