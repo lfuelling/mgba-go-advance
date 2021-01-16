@@ -250,12 +250,14 @@ bool mCheatParseLibretroFile(struct mCheatDevice* device, struct VFile* vf) {
 			break;
 		}
 		if (bytesRead < 0) {
+			printf("mCheatParseLibretroFile no bytes read!\n");
 			return false;
 		}
 		if (cheat[0] == '\n') {
 			continue;
 		}
 		if (strncmp(cheat, "cheat", 5) != 0) {
+            printf("mCheatParseLibretroFile error something something cheat!\n");
 			return false;
 		}
 		char* underscore = strchr(&cheat[5], '_');
@@ -264,11 +266,13 @@ bool mCheatParseLibretroFile(struct mCheatDevice* device, struct VFile* vf) {
 				startFound = true;
 				char* eq = strchr(&cheat[6], '=');
 				if (!eq) {
+                    printf("mCheatParseLibretroFile error !eq!\n");
 					return false;
 				}
 				++eq;
 				while (isspace((int) eq[0])) {
 					if (eq[0] == '\0') {
+                        printf("mCheatParseLibretroFile error eq == bs0!\n");
 						return false;
 					}
 					++eq;
@@ -277,43 +281,51 @@ bool mCheatParseLibretroFile(struct mCheatDevice* device, struct VFile* vf) {
 				char* end;
 				unsigned long nCheats = strtoul(eq, &end, 10);
 				if (end[0] != '\0' && !isspace(end[0])) {
+                    printf("mCheatParseLibretroFile error !isspace!\n");
 					return false;
 				}
 
 				if (nCheats > MAX_CHEATS) {
+                    printf("mCheatParseLibretroFile error more than max cheats!\n");
 					return false;
 				}
 
 				while (nCheats > mCheatSetsSize(&device->cheats)) {
 					struct mCheatSet* newSet = device->createSet(device, NULL);
 					if (!newSet) {
+                        printf("mCheatParseLibretroFile error !newSet!\n");
 						return false;
 					}
 					mCheatAddSet(device, newSet);
 				}
 				continue;
 			}
+            printf("mCheatParseLibretroFile error cheat[5]!\n");
 			return false;
 		}
 		char* underscore2;
 		i = strtoul(&cheat[5], &underscore2, 10);
 		if (underscore2 != underscore) {
+            printf("mCheatParseLibretroFile error underscore != underscore!\n");
 			return false;
 		}
 		++underscore;
 		char* eq = strchr(underscore, '=');
 		if (!eq) {
+            printf("mCheatParseLibretroFile error !eq underscore!\n");
 			return false;
 		}
 		++eq;
 		while (isspace((int) eq[0])) {
 			if (eq[0] == '\0') {
+                printf("mCheatParseLibretroFile error eq == bs0 underscore!\n");
 				return false;
 			}
 			++eq;
 		}
 
 		if (i >= mCheatSetsSize(&device->cheats)) {
+            printf("mCheatParseLibretroFile error i >= setssize!\n");
 			return false;
 		}
 		set = *mCheatSetsGetPointer(&device->cheats, i);

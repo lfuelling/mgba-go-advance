@@ -446,7 +446,7 @@ int main(int argc, char** argv) {
                 success = false;
             }
         }
-        vf->close(vf);
+        //vf->close(vf);
     } else {
         printf("Unable to open cheats file...\n");
         success = false;
