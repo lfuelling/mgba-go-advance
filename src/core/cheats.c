@@ -134,16 +134,18 @@ void mCheatRemoveSet(struct mCheatDevice* device, struct mCheatSet* cheats) {
 }
 
 bool mCheatParseFile(struct mCheatDevice* device, struct VFile* vf) {
+    printf("mCheatParseFile called...\n");
 	char cheat[MAX_LINE_LENGTH];
 	struct mCheatSet* set = NULL;
 	struct mCheatSet* newSet;
 	bool nextDisabled = false;
 	struct StringList directives;
 	StringListInit(&directives, 4);
-
+    printf("mCheatParseFile init done...\n");
 	while (true) {
 		size_t i = 0;
 		ssize_t bytesRead = vf->readline(vf, cheat, sizeof(cheat));
+        printf("mCheatParseFile read %zd bytes...\n", bytesRead);
 		rtrim(cheat);
 		if (bytesRead == 0) {
 			break;
@@ -219,6 +221,7 @@ bool mCheatParseFile(struct mCheatDevice* device, struct VFile* vf) {
 	for (d = 0; d < StringListSize(&directives); ++d) {
 		free(*StringListGetPointer(&directives, d));
 	}
+    printf("mCheatParseFile deinit...\n");
 	StringListClear(&directives);
 	StringListDeinit(&directives);
 	return true;

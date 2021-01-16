@@ -227,10 +227,14 @@ bool mCoreAutoloadCheats(struct mCore* core) {
 }
 
 bool mCoreAutoloadCheatsFromFile(struct mCore* core, struct VFile* file) {
+    printf("mCoreAutoloadCheatsFromFile called...\n");
     bool success = true;
     if (file) {
+        printf("mCoreAutoloadCheatsFromFile getting cheatDevice...\n");
         struct mCheatDevice* device = core->cheatDevice(core);
+        printf("mCoreAutoloadCheatsFromFile parsing file...\n");
         success = mCheatParseFile(device, file);
+        printf("mCoreAutoloadCheatsFromFile closing file...\n");
         file->close(file);
     } else {
 		success = false;
