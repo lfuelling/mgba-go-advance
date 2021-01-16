@@ -226,6 +226,18 @@ bool mCoreAutoloadCheats(struct mCore* core) {
 	return success;
 }
 
+bool mCoreAutoloadCheatsFromFile(struct mCore* core, struct VFile* file) {
+    bool success = true;
+    if (file) {
+        struct mCheatDevice* device = core->cheatDevice(core);
+        success = mCheatParseFile(device, file);
+        file->close(file);
+    } else {
+		success = false;
+	}
+    return success;
+}
+
 bool mCoreSaveState(struct mCore* core, int slot, int flags) {
 	struct VFile* vf = mCoreGetState(core, slot, true);
 	if (!vf) {
