@@ -123,8 +123,11 @@ static void GBACheatSetDeinit(struct mCheatSet* set) {
 }
 
 static void GBACheatAddSet(struct mCheatSet* cheats, struct mCheatDevice* device) {
+    printf("GBACheatAddSet casting set...\n");
 	struct GBACheatSet* gbaset = (struct GBACheatSet*) cheats;
+    printf("GBACheatAddSet adding breakpoint...\n");
 	_addBreakpoint(device, gbaset);
+    printf("GBACheatAddSet patching rom...\n");
 	_patchROM(device, gbaset);
 }
 
