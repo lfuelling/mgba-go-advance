@@ -384,16 +384,11 @@ int main(int argc, char** argv) {
 		} else {
 			printf("Unable to get cheat device!\n");
 			printf("Running autoload...\n");
-			if (mCoreAutoloadCheats(core)) {
-				printf("Autoload successful!\n");
+			if (mCoreAutoloadCheatsFromFile(core, vf)) {
+				printf("Autoload from file successful!\n");
 			} else {
-				printf("Autoload failed! Trying autoload from file...\n");
-				if (mCoreAutoloadCheatsFromFile(core, vf)) {
-					printf("Autoload from file successful!\n");
-				} else {
-					printf("Autoload from file failed!\n");
-					success = false;
-				}
+				printf("Autoload from file failed!\n");
+				success = false;
 			}
 		}
 		vf->close(vf);
