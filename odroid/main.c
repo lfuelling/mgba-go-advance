@@ -372,12 +372,11 @@ int main(int argc, char** argv) {
     char* cheatFilePath = PathCombine(homedir, cheatFileName);
     printf("cheatFilePath='%s'\n", cheatFilePath);
 
-    struct mCheatDevice* device = NULL;
     bool success = true;
     struct VFile* vf = VFileOpen(cheatFilePath, O_RDONLY);
     if (vf) {
         printf("Cheat file opened...\n");
-        device = core->cheatDevice(core);
+        struct mCheatDevice* device = core->cheatDevice(core);
         if(device) {
             printf("Parsing cheats...\n");
             mCheatDeviceClear(device);
@@ -388,11 +387,12 @@ int main(int argc, char** argv) {
         }
         vf->close(vf);
     } else {
+        printf("Unable to open cheats file...\n");
         success = false;
     }
 
     if (!success) {
-        printf("Error parsing cheats!\n");
+        printf("Error while loading cheats!\n");
     } else {
         printf("Cheats loaded...\n");
     }

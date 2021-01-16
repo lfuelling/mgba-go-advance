@@ -105,6 +105,7 @@ static struct mCheatSet* GBACheatSetCreate(struct mCheatDevice* device, const ch
 }
 
 struct mCheatDevice* GBACheatDeviceCreate(void) {
+	printf("GBACheatDeviceCreate called...");
 	struct mCheatDevice* device = malloc(sizeof(*device));
 	mCheatDeviceCreate(device);
 	device->createSet = GBACheatSetCreate;

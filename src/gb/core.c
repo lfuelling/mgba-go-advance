@@ -89,7 +89,7 @@ static bool _GBCoreInit(struct mCore* core) {
 	core->timing = &gb->timing;
 	gbcore->overrides = NULL;
 	gbcore->debuggerPlatform = NULL;
-	gbcore->cheatDevice = NULL;
+	//gbcore->cheatDevice = NULL;
 
 	GBCreate(gb);
 	memset(gbcore->components, 0, sizeof(gbcore->components));
