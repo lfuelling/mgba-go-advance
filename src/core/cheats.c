@@ -115,7 +115,9 @@ bool mCheatAddLine(struct mCheatSet* set, const char* line, int type) {
 }
 
 void mCheatAddSet(struct mCheatDevice* device, struct mCheatSet* cheats) {
+    printf("mCheatAddSet appending set...\n");
 	*mCheatSetsAppend(&device->cheats) = cheats;
+    printf("mCheatAddSet adding cheats...\n");
 	cheats->add(cheats, device);
 }
 
